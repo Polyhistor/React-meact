@@ -23,15 +23,28 @@ class App extends Component {
     })
   }
 
-  // changeNameHandler = (event) => {
-  //   this.setState({
-  //     person : [
-  //       {name:event.target.value, age:12},
-  //       {name:"Jack", age:15},
-  //       {name:"pouya", age:27}
-  //     ]
-  //   })
-  // }
+  changeNameHandler = (event, id) => {
+
+    const personIndex = this.state.person.findIndex(p => {
+      return p.id == id
+    })
+
+    // The new Way
+    const person = {
+      ...this.state.Persons[personIndex]
+    }
+
+    // The old way
+    // const person = Object.assign({}, this.state.persons[PersonIndex])
+
+    person.name = event.target.value;
+    
+    const persons = [...this.state.persons]
+    persons[personIndex] = person
+
+    this.setState({ person : person })
+    
+    }
 
   toggler = () => {
       const doesShow = this.state.personState
@@ -39,7 +52,9 @@ class App extends Component {
   }
 
   deletePerson(personIndex){
+    // The old way
     // const person = this.state.person.slice()
+    // The new way
     const person = [...this.state.person]
     person.splice(personIndex, 1)
     this.setState({ person : person})
@@ -59,7 +74,9 @@ class App extends Component {
                     click = {()=>this.deletePerson(index)}
                     name = {person.name} 
                     age = {person.age} 
-                    key = {person.id} >
+                    key = {person.id} 
+                    changed = {(event)=>this.changeNameHandler(event, person.id)}
+                    >
                     </Person>
           })}
         </div>
