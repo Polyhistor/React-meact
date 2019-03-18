@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import Person from './Person/Person'
-
+import './App.css'
 
 class App extends Component {
 
@@ -26,23 +26,26 @@ class App extends Component {
   changeNameHandler = (event, id) => {
 
     const personIndex = this.state.person.findIndex(p => {
-      return p.id == id
+    return p.id == id
+
     })
 
     // The new Way
-    const person = {
-      ...this.state.Persons[personIndex]
+    // This copies the things
+    const personcpy = {
+      ...this.state.person[personIndex]
     }
+
 
     // The old way
     // const person = Object.assign({}, this.state.persons[PersonIndex])
 
-    person.name = event.target.value;
+    personcpy.name = event.target.value;
     
-    const persons = [...this.state.persons]
-    persons[personIndex] = person
+    const persons = [...this.state.person]
+    persons[personIndex] = personcpy
 
-    this.setState({ person : person })
+    this.setState({ persons : persons })
     
     }
 
@@ -62,6 +65,17 @@ class App extends Component {
 
 
   render() {
+
+    const style = {
+      backgroundColor: 'green',
+      color: 'white',
+      font: 'inherit',
+      border: '1px solid blue',
+      padding: '8px',
+      cursor: 'pointer',
+  
+    }
+   
     
     let persons = null
 
@@ -82,14 +96,30 @@ class App extends Component {
         </div>
       )
 
+      style.backgroundColor = 'red' 
+    }
+      
+
+     
+    let classes = []
+
+    if (this.state.person.length <= 2) {
+      classes.push('red'); // classes  = ['red']
     }
 
+    if (this.state.person.length <= 1){
+      classes.push('bold'); // classes  = ['red', 'bold']
+    }
+
+
     return (
-      <div className="App">
-        <button onClick={this.changestate}>Change Text</button>
-        <button onClick={this.toggler}>Show Contents</button>
-        {persons}
-      </div>
+          <div className="App"> 
+            <h1>This is react dude!</h1>
+            <p className={classes.join(' ')}>this is cool</p>
+            <button onClick={this.changestate}>Change Text</button>
+            <button style={style} onClick={this.toggler}>Show Contents</button>
+            {persons}
+          </div>
     )
 
   }
